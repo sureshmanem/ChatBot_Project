@@ -144,15 +144,15 @@ for length in range(1, 25 + 1):
 
 # Creating placeholders for the inputs and the targets
 def model_inputs():
-    inputs = tf.placeholder(tf.int32, [None, None], name = 'input')
-    targets = tf.placeholder(tf.int32, [None, None], name = 'target')
-    lr = tf.placeholder(tf.float32, name = 'learning_rate')
-    keep_prob = tf.placeholder(tf.float32, name = 'keep_prob')
+    inputs = tf.compat.v1.placeholder(tf.int32, [None, None], name = 'input')
+    targets = tf.compat.v1.placeholder(tf.int32, [None, None], name = 'target')
+    lr = tf.compat.v1.placeholder(tf.float32, name = 'learning_rate')
+    keep_prob = tf.compat.v1.placeholder(tf.float32, name = 'keep_prob')
     return inputs, targets, lr, keep_prob
 
 # Preprocessing the targets
 def preprocess_targets(targets, word2int, batch_size):
-    left_side = tf.fill([batch_size, 1], word2int[''])
+    left_side = tf.compat.v1.fill([batch_size, 1], word2int[''])
     right_side = tf.strided_slice(targets, [0,0], [batch_size, -1], [1,1])
     preprocessed_targets = tf.concat([left_side, right_side], 1)
     return preprocessed_targets
@@ -283,14 +283,14 @@ min_learning_rate = 0.0001
 keep_probability = 0.5
 
 # Defining a session
-tf.reset_default_graph()
-session = tf.InteractiveSession()
+tf.compat.v1.reset_default_graph()
+session = tf.compat.v1.InteractiveSession()
 
 # Loading the model inputs
 inputs, targets, lr, keep_prob = model_inputs()
 
 # Setting the sequence length
-sequence_length = tf.placeholder_with_default(25, None, name = 'sequence_length')
+sequence_length = tf.compat.v1.placeholder_with_default(25, None, name = 'sequence_length')
 
 # Getting the shape of the inputs tensor
 input_shape = tf.shape(inputs)
@@ -400,4 +400,5 @@ for epoch in range(1, epochs + 1):
     if early_stopping_check == early_stopping_stop:
         print("My apologies, I cannot speak better anymore. This is the best I can do.")
         break
+
 print("Game Over")
